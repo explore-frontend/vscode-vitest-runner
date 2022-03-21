@@ -33,7 +33,7 @@ interface TextCase {
 
 class RunVitestCommand implements vscode.Command {
     static ID = 'vitest.runTest';
-    title = 'Run';
+    title = 'Run Vitest';
     command = RunVitestCommand.ID;
     arguments?: [string, string];
 
@@ -44,7 +44,7 @@ class RunVitestCommand implements vscode.Command {
 
 class DevVitestCommand implements vscode.Command {
     static ID = 'vitest.devTest';
-    title = 'Dev';
+    title = 'Dev Vitest';
     command = DevVitestCommand.ID;
     arguments?: [string, string];
 
@@ -55,12 +55,11 @@ class DevVitestCommand implements vscode.Command {
 
 function runInTerminal(text: string, filename: string, cmd: 'run' | 'dev') {
     const casePath = path.dirname(filename);
-
     const terminal = vscode.window.createTerminal(`vitest - ${cmd}`);
 
-    const command = `cd ${JSON.stringify(
-        casePath
-    )} && npx vitest ${cmd} -t ${JSON.stringify(text)}`;
+    const casePathStr = JSON.stringify(casePath);
+    const caseNameStr = JSON.stringify(text);
+    const command = `cd ${casePathStr} && npx vitest ${cmd} -t ${caseNameStr}`;
     terminal.sendText(command, true);
     terminal.show();
 }
@@ -125,7 +124,7 @@ class CodeLensProvider implements vscode.CodeLensProvider {
 
         const text = document.getText();
         const sourceFile = ts.createSourceFile(
-            '',
+            'dummy',
             text,
             ts.ScriptTarget.Latest
         );

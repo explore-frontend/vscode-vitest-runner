@@ -4,3 +4,7 @@ src
 prettier.config.json
 tsconfig.json
 scripts
+tests
+vitest.config.ts
+**/*.d.ts
+**/*.js.map
