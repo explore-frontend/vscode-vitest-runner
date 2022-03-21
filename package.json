@@ -1,15 +1,28 @@
 {
   "name": "vscode-vitest",
-  "version": "1.0.0",
+  "displayName": "Vitest Runner",
+  "version": "0.0.1",
   "main": "dist/index.js",
+  "license": "MIT",
+  "description": "Vitest case runner.",
+  "publisher": "kingwl",
   "engines": {
     "vscode": "^1.65.0"
   },
+  "categories": [
+    "Testing",
+    "Other"
+  ],
+  "keywords": [
+    "vitest",
+    "runner",
+    "codelens"
+  ],
   "repository": "git@github.com:kwai-explore/vscode-vitest.git",
-  "author": "wangwenlu <wangwenlu@kuaishou.com>",
-  "license": "MIT",
+  "author": "kingwl <kingwenlu@gmail.com>",
   "activationEvents": [
-    "onLanguage:typescript"
+    "onLanguage:typescript",
+    "onLanguage:javascript"
   ],
   "devDependencies": {
     "esbuild": "^0.14.27",
@@ -19,9 +32,8 @@
     "vscode": "^1.1.37"
   },
   "scripts": {
-    "build:dts": "tsc",
-    "build:bundle": "node ./scripts/build.js",
-    "build": "yarn build:bundle && yarn build:dts",
+    "build": "node ./scripts/build.js",
+    "build:package": "yarn build && vsce package",
     "format:check": "prettier --config ./prettier.config.json --c ./src/**/*.ts",
     "format:write": "yarn format:check --write"
   }

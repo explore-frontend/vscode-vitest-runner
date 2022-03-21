@@ -1,0 +1,6 @@
+.vscode
+.gitignore
+src
+prettier.config.json
+tsconfig.json
+scripts
