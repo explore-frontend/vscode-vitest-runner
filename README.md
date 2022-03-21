@@ -1,1 +1,1 @@
-# vscode-vitest
+# vscode-vitest-runner

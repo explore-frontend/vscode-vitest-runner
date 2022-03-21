@@ -1,5 +1,5 @@
 {
-  "name": "vscode-vitest",
+  "name": "vscode-vitest-runner",
   "displayName": "Vitest Runner",
   "version": "0.0.1",
   "main": "dist/index.js",
@@ -19,7 +19,7 @@
     "runner",
     "codelens"
   ],
-  "repository": "git@github.com:kwai-explore/vscode-vitest.git",
+  "repository": "git@github.com:kwai-explore/vscode-vitest-runner.git",
   "author": "kingwl <kingwenlu@gmail.com>",
   "activationEvents": [
     "onLanguage:typescript",
