@@ -3,6 +3,7 @@
   "displayName": "Vitest Runner",
   "version": "0.0.1",
   "main": "dist/index.js",
+  "icon": "logo.png",
   "license": "MIT",
   "description": "Vitest case runner.",
   "publisher": "kingwl",
@@ -33,7 +34,7 @@
   },
   "scripts": {
     "build": "node ./scripts/build.js",
-    "build:package": "yarn build && vsce package",
+    "package": "yarn build && yarn vsce package",
     "format:check": "prettier --config ./prettier.config.json --c ./src/**/*.ts",
     "format:write": "yarn format:check --write"
   }
