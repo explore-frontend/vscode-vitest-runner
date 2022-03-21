@@ -1,4 +1,4 @@
-import * as ts from 'typescript/lib/tsserverlibrary';
+import type * as ts from 'typescript';
 import * as vscode from 'vscode';
 import * as path from 'path';
 
@@ -12,6 +12,17 @@ function flatMap<T, U>(
         results.push(...(Array.isArray(result) ? result : [result]));
     });
     return results;
+}
+
+function getVscodeTypescriptPath(appRoot: string) {
+    return path.join(
+        appRoot,
+        'extensions',
+        'node_modules',
+        'typescript',
+        'lib',
+        'typescript.js'
+    );
 }
 
 interface TextCase {
@@ -71,10 +82,11 @@ vscode.commands.registerCommand(
 const caseText = new Set(['it', 'describe']);
 
 function tryGetVitestTestCase(
+    typescript: typeof ts,
     callExpression: ts.CallExpression,
     file: ts.SourceFile
 ): TextCase | undefined {
-    if (!ts.isIdentifier(callExpression.expression)) {
+    if (!typescript.isIdentifier(callExpression.expression)) {
         return undefined;
     }
 
@@ -88,7 +100,10 @@ function tryGetVitestTestCase(
     }
 
     const [testName, body] = args;
-    if (!ts.isStringLiteralLike(testName) || !ts.isFunctionLike(body)) {
+    if (
+        !typescript.isStringLiteralLike(testName) ||
+        !typescript.isFunctionLike(body)
+    ) {
         return undefined;
     }
 
@@ -100,10 +115,14 @@ function tryGetVitestTestCase(
 }
 
 class CodeLensProvider implements vscode.CodeLensProvider {
+    constructor(private typescript: typeof ts) {}
+
     provideCodeLenses(
         document: vscode.TextDocument,
         token: vscode.CancellationToken
     ): vscode.ProviderResult<vscode.CodeLens[]> {
+        const ts = this.typescript;
+
         const text = document.getText();
         const sourceFile = ts.createSourceFile(
             '',
@@ -136,7 +155,7 @@ class CodeLensProvider implements vscode.CodeLensProvider {
             }
 
             if (ts.isCallExpression(node)) {
-                const testCase = tryGetVitestTestCase(node, sourceFile);
+                const testCase = tryGetVitestTestCase(ts, node, sourceFile);
                 if (testCase) {
                     testCases.push(testCase);
                 }
@@ -147,10 +166,13 @@ class CodeLensProvider implements vscode.CodeLensProvider {
 }
 
 export function activate(context: vscode.ExtensionContext) {
+    const tsPath = getVscodeTypescriptPath(vscode.env.appRoot);
+    const typescript = require(tsPath) as typeof ts;
+
     context.subscriptions.push(
         vscode.languages.registerCodeLensProvider(
             ['typescript', 'javascript'],
-            new CodeLensProvider()
+            new CodeLensProvider(typescript)
         )
     );
 }
