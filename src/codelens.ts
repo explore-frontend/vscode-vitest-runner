@@ -4,7 +4,7 @@ import { TextCase } from './types';
 import { flatMap } from './utils';
 import { RunVitestCommand, DebugVitestCommand } from './vscode';
 
-const caseText = new Set(['it', 'describe']);
+const caseText = new Set(['it', 'describe','test']);
 
 function tryGetVitestTestCase(
     typescript: typeof ts,
