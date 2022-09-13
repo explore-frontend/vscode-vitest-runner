@@ -23,7 +23,9 @@
   "author": "kingwl <kingwenlu@gmail.com>",
   "activationEvents": [
     "onLanguage:typescript",
-    "onLanguage:javascript"
+    "onLanguage:javascript",
+    "onLanguage:typescriptreact",
+    "onLanguage:javascriptreact"
   ],
   "devDependencies": {
     "@types/vscode": "^1.65.0",

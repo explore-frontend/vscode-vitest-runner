@@ -6,7 +6,8 @@
         "target": "es6",
         "declaration": true,
         "outDir": "dist",
-        "emitDeclarationOnly": true
+        "emitDeclarationOnly": true,
+        "jsx": "preserve"
     },
     "include": [
         "src"
