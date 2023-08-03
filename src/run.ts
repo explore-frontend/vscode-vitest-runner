@@ -19,7 +19,7 @@ function buildVitestArgs({ caseName, casePath, sanitize = true }: { caseName: st
         caseName = JSON.stringify(caseName);
     }
 
-    const args = ['vitest', 'run', '-t', caseName, '--dir', sanitizedCasePath];
+    const args = ['vitest', 'run', '-t', caseName, sanitizedCasePath];
 
     const rootDir = getCwd(casePath);
     if (rootDir) {
@@ -32,7 +32,6 @@ function buildVitestArgs({ caseName, casePath, sanitize = true }: { caseName: st
 let terminal: vscode.Terminal | undefined;
 
 export function runInTerminal(text: string, filename: string) {
-    const casePath = path.dirname(filename);
     let terminalAlreadyExists = true;
     if (!terminal || terminal.exitStatus) {
         terminalAlreadyExists = false;
@@ -40,7 +39,7 @@ export function runInTerminal(text: string, filename: string) {
         terminal = vscode.window.createTerminal(`vscode-vitest-runner`);
     }
 
-    const vitestArgs = buildVitestArgs({ caseName: text, casePath: casePath });
+    const vitestArgs = buildVitestArgs({ caseName: text, casePath: filename });
     const npxArgs = ['npx', ...vitestArgs];
 
     if (terminalAlreadyExists) {
@@ -60,7 +59,7 @@ function buildDebugConfig(
         name: 'Debug vitest case',
         request: 'launch',
         runtimeArgs: buildVitestArgs({ caseName: text, casePath: casePath, sanitize: false }),
-        cwd: getCwd(casePath) || casePath,
+        cwd: getCwd(casePath) || path.dirname(casePath),
         runtimeExecutable: 'npx',
         skipFiles: ['<node_internals>/**'],
         type: 'pwa-node',
@@ -70,7 +69,6 @@ function buildDebugConfig(
 }
 
 export function debugInTermial(text: string, filename: string) {
-    const casePath = path.dirname(filename);
-    const config = buildDebugConfig(casePath, text);
+    const config = buildDebugConfig(filename, text);
     vscode.debug.startDebugging(undefined, config);
 }
