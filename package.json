@@ -40,5 +40,8 @@
     "package": "yarn build && yarn vsce package",
     "format:check": "prettier --config ./prettier.config.json --c ./src/**/*.ts",
     "format:write": "yarn format:check --write"
+  },
+  "dependencies": {
+    "find-up": "^5.0.0"
   }
 }
