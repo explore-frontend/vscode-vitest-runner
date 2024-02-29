@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-function buildVitestArgs(text: string) {
-    return ['vitest', 'run', '-t', text];
+function buildVitestArgs(text: string, path: string) {
+    return ['vitest', 'run', '-t', text, path];
 }
 
 function buildCdArgs(path: string) {
@@ -19,7 +19,7 @@ export function runInTerminal(text: string, filename: string) {
     const cdArgs = buildCdArgs(casePathStr);
     terminal.sendText(cdArgs.join(' '), true);
 
-    const vitestArgs = buildVitestArgs(caseNameStr);
+    const vitestArgs = buildVitestArgs(caseNameStr, casePathStr);
     const npxArgs = ['npx', ...vitestArgs];
     terminal.sendText(npxArgs.join(' '), true);
     terminal.show();
@@ -32,7 +32,7 @@ function buildDebugConfig(
     return {
         name: 'Debug vitest case',
         request: 'launch',
-        runtimeArgs: buildVitestArgs(text),
+        runtimeArgs: buildVitestArgs(text, cwd),
         cwd,
         runtimeExecutable: 'npx',
         skipFiles: ['<node_internals>/**'],
